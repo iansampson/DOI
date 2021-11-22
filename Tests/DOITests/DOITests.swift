@@ -42,4 +42,20 @@ final class DOITests: XCTestCase {
         XCTAssertEqual(doi.url.absoluteString, "https://doi.org/10.1000/456%23789")
         XCTAssertEqual(doi.string, "10.1000/456#789")
     }
+    
+    func testEncodeAndDecodeDOI() throws {
+        // Given
+        let string = "\"doi:10.123\\/456\""
+        guard let data = string.data(using: .utf8) else {
+            fatalError()
+        }
+        
+        // When
+        let doi = try JSONDecoder().decode(DOI.self, from: data)
+        let encodedDOI = try JSONEncoder().encode(doi)
+        
+        // Then
+        XCTAssertEqual(doi.string, "10.123/456")
+        XCTAssertEqual(encodedDOI, data)
+    }
 }

@@ -17,6 +17,7 @@ import Foundation
 // with a percent-encoded slash in the prefix
 // and then tries to construct another DOI with that string,
 // e.g. during encoding and decoding to JSON)
+// TODO: Improve error-handling (especially when URL parsing fails)
 
 public struct DOI {
     public let registrantCode: String

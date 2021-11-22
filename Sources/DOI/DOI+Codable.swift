@@ -1,0 +1,17 @@
+//
+//  DOI+Codable.swift
+//  
+//
+//  Created by Ian Sampson on 2021-11-22.
+//
+
+extension DOI: Codable {
+    public init(from decoder: Decoder) throws {
+        let string = try String(from: decoder)
+        try self.init(string: string)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        try string(includingLabel: true).encode(to: encoder)
+    }
+}
