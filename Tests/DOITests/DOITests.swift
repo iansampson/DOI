@@ -9,7 +9,7 @@ import XCTest
 @testable import DOI
 
 final class DOITests: XCTestCase {
-    func testExample() throws {
+    func testParseDOI() throws {
         // When
         let doi = try DOI(string: "10.123/456")
         
@@ -30,5 +30,14 @@ final class DOITests: XCTestCase {
             XCTAssertEqual(doi.string, "10.123/456")
             XCTAssertEqual(doi.url.absoluteString, "https://doi.org/10.123/456")
         }
+    }
+    
+    func testParsePercentEncodedURL() throws {
+        // When
+        let doi = try DOI(string: "https://doi.org/10.1000/456%23789")
+        
+        // Then
+        XCTAssertEqual(doi.url.absoluteString, "https://doi.org/10.1000/456%23789")
+        XCTAssertEqual(doi.string, "10.1000/456#789")
     }
 }

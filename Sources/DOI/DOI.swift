@@ -11,9 +11,6 @@ import Foundation
 // TODO: Allow (optionally) restricting special characters
 //   https://www.doi.org/doi_handbook/2_Numbering.html
 //   See Table 1 and 2
-// TODO: Consider effects of removing percent encoding
-// TODO: Test percent encoding in URLs
-// TODO: Consider percent encoding URLs
 
 struct DOI {
     let registrantCode: String
@@ -67,7 +64,9 @@ struct DOI {
     }
     
     var url: URL {
-        guard let url = URL(string: "https://doi.org/\(string)") else {
+        guard let url = URL(string: "https://doi.org")?
+                .appendingPathComponent(string)
+        else {
             fatalError()
         }
         return url
