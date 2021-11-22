@@ -7,16 +7,22 @@
 
 import Foundation
 
-// TODO: Expose public interface
+// TODO: Conform to Codable
+
 // TODO: Allow (optionally) restricting special characters
 //   https://www.doi.org/doi_handbook/2_Numbering.html
 //   See Table 1 and 2
+// TODO: Percent-encode forward slash in registrant code
+// (in case the caller obtains a string from a DOI
+// with a percent-encoded slash in the prefix
+// and then tries to construct another DOI with that string,
+// e.g. during encoding and decoding to JSON)
 
-struct DOI {
-    let registrantCode: String
-    let suffix: String
+public struct DOI {
+    public let registrantCode: String
+    public let suffix: String
     
-    init(string: String) throws {
+    public init(string: String) throws {
         if let url = URL(string: string) {
             if url.host == "doi.org" || url.host == "www.doi.org",
                url.scheme == "https" || url.scheme == "http" {
@@ -51,11 +57,11 @@ struct DOI {
     }
     
     // TODO: Allow different formats
-    var string: String {
+    public var string: String {
         "10.\(registrantCode)/\(suffix)"
     }
     
-    func string(includingLabel: Bool) -> String {
+    public func string(includingLabel: Bool) -> String {
         if includingLabel {
             return "doi:10.\(registrantCode)/\(suffix)"
         } else {
@@ -63,75 +69,12 @@ struct DOI {
         }
     }
     
-    var url: URL {
+    public var url: URL {
         guard let url = URL(string: "https://doi.org")?
                 .appendingPathComponent(string)
         else {
             fatalError()
         }
         return url
-    }
-}
-
-extension StringProtocol {
-    // TODO: Make this function more efficient
-    func lowercasedASCII() -> String {
-        var string = ""
-        for character in self {
-            if character.isASCII {
-                string += character.lowercased()
-            } else {
-                string.append(character)
-            }
-        }
-        return string
-    }
-}
-
-enum ParseError: Error {
-    case expectedDirectoryIndicator
-    case expectedForwardSlashAfterRegistrantCode
-}
-
-struct OptionalLabel: Parsable {
-    static func parse(_ input: Substring) throws -> Parse<()> {
-        guard input.prefix(4) == "doi:" else {
-            return .init(remainingInput: input, output: ())
-        }
-        return .init(remainingInput: input.dropFirst(4), output: ())
-    }
-}
-
-struct DirectoryIndicator: Parsable {
-    static func parse(_ input: Substring) throws -> Parse<()> {
-        guard input.prefix(3) == "10." else {
-            throw ParseError.expectedDirectoryIndicator
-        }
-        return .init(remainingInput: input.dropFirst(3), output: ())
-    }
-}
-
-struct RegistrantCode: Parsable {
-    static func parse(_ input: Substring) throws -> Parse<Substring> {
-        var remainingInput = input
-        while let character = remainingInput.popFirst() {
-            if character == "/" {
-                return .init(remainingInput: remainingInput,
-                             output: input[input.startIndex..<remainingInput.startIndex].dropLast())
-            }
-        }
-        throw ParseError.expectedForwardSlashAfterRegistrantCode
-    }
-}
-
-struct Suffix: Parsable {
-    static func parse(_ input: Substring) throws -> Parse<Substring> {
-        var remainingInput = input
-        while let _ = remainingInput.popFirst() {
-            // TODO: Check for disallowed characters
-            // https://www.doi.org/doi_handbook/2_Numbering.html
-            // See Table 1 and 2
-        }
-        return .init(remainingInput: remainingInput, output: input)
     }
 }

@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import DOI
+import DOI
 
 final class DOITests: XCTestCase {
     func testParseDOI() throws {
@@ -15,6 +15,8 @@ final class DOITests: XCTestCase {
         
         // Then
         XCTAssertEqual(doi.string, "10.123/456")
+        XCTAssertEqual(doi.registrantCode, "123")
+        XCTAssertEqual(doi.suffix, "456")
     }
     
     func testParseURL() throws {
