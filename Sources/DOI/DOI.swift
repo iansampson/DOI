@@ -7,6 +7,13 @@
 
 import Foundation
 
+// TODO: Parse URLs: https://doi.org
+// TODO: Expose public interface
+// TODO: Consider effects of removing percent encoding
+// TODO: Allow (optionally) restricting special characters
+//   https://www.doi.org/doi_handbook/2_Numbering.html
+//   See Table 1 and 2
+
 struct DOI {
     let registrantCode: String
     let suffix: String
@@ -36,10 +43,22 @@ struct DOI {
     var string: String {
         "10.\(registrantCode)/\(suffix)"
     }
+    
+    func string(includingLabel: Bool) -> String {
+        if includingLabel {
+            return "doi:10.\(registrantCode)/\(suffix)"
+        } else {
+            return string
+        }
+    }
+    
+    var url: URL {
+        guard let url = URL(string: "https://doi.org/\(string)") else {
+            fatalError()
+        }
+        return url
+    }
 }
-
-// Parse doi:
-// parse https://doi.org //
 
 extension StringProtocol {
     // TODO: Make this function more efficient
