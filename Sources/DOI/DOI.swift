@@ -7,6 +7,7 @@
 
 import Foundation
 
+// TODO: Write readme
 // TODO: Allow (optionally) restricting special characters
 //   https://www.doi.org/doi_handbook/2_Numbering.html
 //   See Table 1 and 2
@@ -17,7 +18,7 @@ import Foundation
 // e.g. during encoding and decoding to JSON)
 // TODO: Improve error-handling (especially when URL parsing fails)
 
-public struct DOI {
+public struct DOI: Hashable {
     public let registrantCode: String
     public let suffix: String
     
