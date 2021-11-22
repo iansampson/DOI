@@ -8,7 +8,7 @@
 extension DOI: Codable {
     public init(from decoder: Decoder) throws {
         let string = try String(from: decoder)
-        try self.init(string: string)
+        try self.init(string)
     }
     
     public func encode(to encoder: Encoder) throws {

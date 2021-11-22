@@ -11,7 +11,7 @@ import DOI
 final class DOITests: XCTestCase {
     func testParseDOI() throws {
         // When
-        let doi = try DOI(string: "10.123/456")
+        let doi = try DOI("10.123/456")
         
         // Then
         XCTAssertEqual(doi.string, "10.123/456")
@@ -21,11 +21,11 @@ final class DOITests: XCTestCase {
     
     func testParseURL() throws {
         // When
-        let doiA = try DOI(string: "https://doi.org/10.123/456")
-        let doiB = try DOI(string: "https://www.doi.org/10.123/456")
-        let doiC = try DOI(string: "http://doi.org/10.123/456")
-        let doiD = try DOI(string: "doi.org/10.123/456")
-        let doiE = try DOI(string: "www.doi.org/10.123/456")
+        let doiA = try DOI("https://doi.org/10.123/456")
+        let doiB = try DOI("https://www.doi.org/10.123/456")
+        let doiC = try DOI("http://doi.org/10.123/456")
+        let doiD = try DOI("doi.org/10.123/456")
+        let doiE = try DOI("www.doi.org/10.123/456")
         
         // Then
         for doi in [doiA, doiB, doiC, doiD, doiE] {
@@ -36,7 +36,7 @@ final class DOITests: XCTestCase {
     
     func testParsePercentEncodedURL() throws {
         // When
-        let doi = try DOI(string: "https://doi.org/10.1000/456%23789")
+        let doi = try DOI("https://doi.org/10.1000/456%23789")
         
         // Then
         XCTAssertEqual(doi.url.absoluteString, "https://doi.org/10.1000/456%23789")

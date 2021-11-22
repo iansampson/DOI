@@ -22,16 +22,17 @@ public struct DOI: Hashable {
     public let registrantCode: String
     public let suffix: String
     
-    public init(string: String) throws {
+    public init<S>(_ string: S) throws where S: StringProtocol, S.SubSequence == Substring {
+        let string = String(string)
         if let url = URL(string: string) {
             if url.host == "doi.org" || url.host == "www.doi.org",
                url.scheme == "https" || url.scheme == "http" {
                 let string = String(url.path.dropFirst())
-                self = try Self.init(string: string)
+                self = try Self.init(string)
                 return
             } else if url.pathComponents.first == "doi.org" || url.pathComponents.first == "www.doi.org" {
                 let string = url.pathComponents.dropFirst().joined(separator: "/")
-                self = try Self.init(string: string)
+                self = try Self.init(string)
                 return
             }
         }
