@@ -7,18 +7,32 @@
 
 import Foundation
 
-// TODO: Parse URLs: https://doi.org
 // TODO: Expose public interface
-// TODO: Consider effects of removing percent encoding
 // TODO: Allow (optionally) restricting special characters
 //   https://www.doi.org/doi_handbook/2_Numbering.html
 //   See Table 1 and 2
+// TODO: Consider effects of removing percent encoding
+// TODO: Test percent encoding in URLs
+// TODO: Consider percent encoding URLs
 
 struct DOI {
     let registrantCode: String
     let suffix: String
     
     init(string: String) throws {
+        if let url = URL(string: string) {
+            if url.host == "doi.org" || url.host == "www.doi.org",
+               url.scheme == "https" || url.scheme == "http" {
+                let string = String(url.path.dropFirst())
+                self = try Self.init(string: string)
+                return
+            } else if url.pathComponents.first == "doi.org" || url.pathComponents.first == "www.doi.org" {
+                let string = url.pathComponents.dropFirst().joined(separator: "/")
+                self = try Self.init(string: string)
+                return
+            }
+        }
+        
         let input = string[...]
         let resultA = try OptionalLabel.parse(input)
         let resultB = try DirectoryIndicator.parse(resultA.remainingInput)

@@ -16,4 +16,19 @@ final class DOITests: XCTestCase {
         // Then
         XCTAssertEqual(doi.string, "10.123/456")
     }
+    
+    func testParseURL() throws {
+        // When
+        let doiA = try DOI(string: "https://doi.org/10.123/456")
+        let doiB = try DOI(string: "https://www.doi.org/10.123/456")
+        let doiC = try DOI(string: "http://doi.org/10.123/456")
+        let doiD = try DOI(string: "doi.org/10.123/456")
+        let doiE = try DOI(string: "www.doi.org/10.123/456")
+        
+        // Then
+        for doi in [doiA, doiB, doiC, doiD, doiE] {
+            XCTAssertEqual(doi.string, "10.123/456")
+            XCTAssertEqual(doi.url.absoluteString, "https://doi.org/10.123/456")
+        }
+    }
 }
