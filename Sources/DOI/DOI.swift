@@ -78,3 +78,9 @@ public struct DOI: Hashable {
         return url
     }
 }
+
+extension DOI: CustomStringConvertible {
+    public var description: String {
+        string(includingLabel: true)
+    }
+}
