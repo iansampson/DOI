@@ -7,8 +7,6 @@
 
 import Foundation
 
-// TODO: Conform to Codable
-
 // TODO: Allow (optionally) restricting special characters
 //   https://www.doi.org/doi_handbook/2_Numbering.html
 //   See Table 1 and 2
