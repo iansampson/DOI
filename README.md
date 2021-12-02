@@ -20,17 +20,24 @@ let package = Package(
 
 ## Usage
 
-You can construct a `DOI` using the standard prefix:
+You can construct a `DOI` with an URL path:
+``` Swift
+let doi = try DOI("https://doi.org/10.123/456")
+```
+
+Or with the standard prefix:
 
 ``` Swift
 let doi = try DOI("doi:10.123/456")
 ```
 
-Or with an URL path:
+Or with no prefix at all:
 
 ``` Swift
-let doi = try DOI("https://doi.org/10.123/456")
+let doi = try DOI("10.123/456")
 ```
+
+All of which produce equivalent values.
 
 You can access the registrant code and suffix as separate properties:
 
@@ -39,7 +46,7 @@ doi.registrantCode // 10.123
 doi.suffix // 456
 ```
 
-And you can reformat the DOI as an URL or a string:
+And you can reformat the DOI as either an URL or a string:
 
 ``` Swift
 doi.string // 10.123/456
