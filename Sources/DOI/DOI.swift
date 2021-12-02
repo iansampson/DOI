@@ -17,6 +17,7 @@ import Foundation
 // and then tries to construct another DOI with that string,
 // e.g. during encoding and decoding to JSON)
 // TODO: Improve error-handling (especially when URL parsing fails)
+// TODO: Allow (or perhaps even require) constructing DOIs with an URL
 
 public struct DOI: Hashable {
     public let registrantCode: String
