@@ -1,6 +1,6 @@
 # DOI
 
-A Swift package for parsing DOIs into a type-safe struct.
+A Swift package for parsing DOI strings into a type-safe structure.
 
 
 ## Installation
